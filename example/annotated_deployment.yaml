@@ -1,0 +1,25 @@
+# This example shows a controller deployment which has been annotated
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mycontroller
+  annotations:
+    controller-zero-scaler/zeroScaleTimeout: "60s"
+    controller-zero-scaler/watchedKinds: |
+      [{"apiVersion": "apps/v1", "Kind": "Deployment"}]
+    controller-zero-scaler/ownedKinds: "[]"
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:1.7.9
+        ports:
+        - containerPort: 80
